@@ -51,12 +51,18 @@ public class TodoItemTask {
         return assignee;
     }
 
-    public String getSummary(){
-        if (isAssigned()) {
-            return "TodoItemTaskInfo {id: " + id + ", assigned: " + assigned + ", todoItem: " + todoItem.getTitle() + ", assignee: "
-                    + assignee.getFirstName() + " " + assignee.getLastName() + "}";
-        } else {
-            return "TodoItemTaskInfo {id: " + id + ", assigned: " + assigned + ", todoItem: " + todoItem.getTitle() + ", assignee: not assigned}";
-        }
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+
+    @Override
+    public String toString() {
+        return "TodoItemTaskInfo {id: " + getId() + ", assigned: " + isAssigned() + ", todoItem: " + getTodoItem() + ", assignee: not assigned}";
     }
 }

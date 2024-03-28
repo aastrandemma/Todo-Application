@@ -3,6 +3,8 @@ package org.github.aastrandemma.model;
 import java.time.LocalDate;
 import java.util.Objects;
 
+import static java.util.Objects.hash;
+
 public class TodoItem {
     private int id; // is an int representing each TodoItem object
     private String title; // Not NULL or empty
@@ -79,15 +81,21 @@ public class TodoItem {
         return LocalDate.now().isAfter(deadline);
     }
 
-    public String getSummary(){
-        String overdue = "No";
-        if (isOverdue()) {
-            if (!isDone()) {
-                overdue = "Yes";
-            }
-        }
-        return "TodoItemInfo {id: " + id + ", title: " + title + ", taskDescription: " + taskDescription
-                + ", deadline: " + deadline + ", done: " + done + ", overdue: " + overdue + ", creator: "
-                + creator.getFirstName() + " " + creator.getLastName() + "}";
+    @Override
+    public int hashCode() {
+        return hash(id,title,taskDescription,deadline,done);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof TodoItem)) return false;
+        return id == ((TodoItem) obj).getId() && Objects.equals(title, ((TodoItem) obj).getTitle()) && Objects.equals(taskDescription, ((TodoItem) obj).getTaskDescription())
+                && deadline == ((TodoItem) obj).getDeadline() && done == ((TodoItem) obj).isDone();
+    }
+
+    @Override
+    public String toString() {
+        return "TodoItemInfo {id: " + getId() + ", title: " + getTitle() + ", taskDescription: " + getTaskDescription()
+                + ", deadline: " + getDeadline() + ", done: " + isDone() + "}";
     }
 }
