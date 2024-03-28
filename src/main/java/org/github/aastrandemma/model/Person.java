@@ -2,11 +2,14 @@ package org.github.aastrandemma.model;
 
 import java.util.Objects;
 
+import static java.util.Objects.hash;
+
 public class Person {
     private int id;
     private String firstName;
     private String lastName;
     private String email;
+    private AppUser credentials;
 
     public Person(String firstName, String lastName, String email) {
         setFirstName(firstName);
@@ -29,6 +32,10 @@ public class Person {
         this.email = email;
     }
 
+    private void setCredentials(AppUser credentials) {
+        this.credentials = credentials;
+    }
+
     private int getId() {
         return id;
     }
@@ -45,7 +52,24 @@ public class Person {
         return email;
     }
 
-    public String getSummary(){
-        return "PersonInfo {id: " + id + ", name: " + firstName + " " + lastName + ", email: " + email + "}";
+    private AppUser getCredentials() {
+        return credentials;
+    }
+
+    @Override
+    public int hashCode() {
+        return hash(id,firstName,lastName,email);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof Person)) return false;
+        return id == ((Person) obj).getId() && Objects.equals(firstName, ((Person) obj).getFirstName())
+                && Objects.equals(lastName, ((Person) obj).getLastName()) && Objects.equals(email, ((Person) obj).getEmail());
+    }
+
+    @Override
+    public String toString() {
+        return "PersonInfo {id: " + getId() + ", name: " + getFirstName() + " " + getLastName() + ", email: " + getEmail() + "}";
     }
 }
