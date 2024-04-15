@@ -34,4 +34,11 @@ public class BaseIdSequencerTest {
         testObject.setCurrentId(2000);
         assertEquals(2000, testObject.getCurrentId());
     }
+
+    @Test
+    public void testSetPersonIdTodoItemIdTodoItemTaskId() {
+        assertEquals(1, PersonIdSequencer.getInstance().nextId());
+        assertEquals(1, TodoItemIdSequencer.getInstance().nextId());
+        assertEquals(1, TodoItemTaskIdSequencer.getInstance().nextId());
+    }
 }
