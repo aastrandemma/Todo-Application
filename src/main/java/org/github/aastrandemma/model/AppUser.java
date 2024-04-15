@@ -14,7 +14,7 @@ public class AppUser{
         setRole(role);
     }
 
-    private String getUsername() {
+    public String getUsername() {
         return username;
     }
 
@@ -22,25 +22,25 @@ public class AppUser{
         return password;
     }
 
-    private AppRole getRole() {
+    public AppRole getRole() {
         return role;
     }
 
-    private void setUsername(String username) {
+    public void setUsername(String username) {
         if (username == null || username.trim().isEmpty()) {
             throw new IllegalArgumentException("Username can't be null or empty.");
         }
         this.username =  username;
     }
 
-    private void setPassword(String password){
+    public void setPassword(String password){
         if (password.trim().isEmpty()) {
             throw new IllegalArgumentException("Username can't be null or empty.");
         }
         this.password =  password;
     }
 
-    private void setRole(AppRole role) {
+    public void setRole(AppRole role) {
         this.role = requireNonNull(role, "Role can't be null.");
     }
 
