@@ -1,5 +1,7 @@
 package org.github.aastrandemma.data.impl;
 
+import org.github.aastrandemma.JSONReader;
+import org.github.aastrandemma.JSONWriter;
 import org.github.aastrandemma.data.ITodoItemDAO;
 import org.github.aastrandemma.data.sequencer.TodoItemIdSequencer;
 import org.github.aastrandemma.model.TodoItem;
@@ -11,7 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class TodoItemDAOCollection implements ITodoItemDAO {
-    private final List<TodoItem> storage = new ArrayList<>();
+    private List<TodoItem> storage = new ArrayList<>();
     private static TodoItemDAOCollection instance;
 
     private TodoItemDAOCollection() {
@@ -22,6 +24,14 @@ public class TodoItemDAOCollection implements ITodoItemDAO {
             instance = new TodoItemDAOCollection();
         }
         return instance;
+    }
+
+    public void initializeTodoItem() {
+        storage = JSONReader.getInstance().readToList("todoItem");
+    }
+
+    public void shutDownTodoItem() {
+        JSONWriter.getInstance().writeFromListToJson(storage, "todoItem");
     }
 
     @Override

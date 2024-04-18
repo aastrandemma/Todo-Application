@@ -1,5 +1,7 @@
 package org.github.aastrandemma.data.impl;
 
+import org.github.aastrandemma.JSONReader;
+import org.github.aastrandemma.JSONWriter;
 import org.github.aastrandemma.data.IAppUserDAO;
 import org.github.aastrandemma.model.AppUser;
 
@@ -7,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AppUserDAOCollection implements IAppUserDAO {
-    private final List<AppUser> storage = new ArrayList<>();
+    private List<AppUser> storage = new ArrayList<>();
     private static AppUserDAOCollection instance;
 
     private AppUserDAOCollection() {
@@ -18,6 +20,14 @@ public class AppUserDAOCollection implements IAppUserDAO {
             instance = new AppUserDAOCollection();
         }
         return instance;
+    }
+
+    public void initializeAppUser() {
+        storage = JSONReader.getInstance().readToList("appUser");
+    }
+
+    public void shutDownAppUser() {
+        JSONWriter.getInstance().writeFromListToJson(storage, "appUser");
     }
 
     @Override

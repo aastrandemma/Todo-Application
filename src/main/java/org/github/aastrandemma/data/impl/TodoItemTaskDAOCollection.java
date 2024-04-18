@@ -1,5 +1,7 @@
 package org.github.aastrandemma.data.impl;
 
+import org.github.aastrandemma.JSONReader;
+import org.github.aastrandemma.JSONWriter;
 import org.github.aastrandemma.data.ITodoItemTaskDAO;
 import org.github.aastrandemma.data.sequencer.TodoItemTaskIdSequencer;
 import org.github.aastrandemma.model.TodoItemTask;
@@ -9,7 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class TodoItemTaskDAOCollection implements ITodoItemTaskDAO {
-    private final List<TodoItemTask> storage = new ArrayList<>();
+    private List<TodoItemTask> storage = new ArrayList<>();
     private static TodoItemTaskDAOCollection instance;
 
     private TodoItemTaskDAOCollection() {
@@ -21,6 +23,15 @@ public class TodoItemTaskDAOCollection implements ITodoItemTaskDAO {
         }
         return instance;
     }
+
+    public void initializeTodoItemTask() {
+        storage = JSONReader.getInstance().readToList("todoItemTasks");
+    }
+
+    public void shutDownTodoItemTask() {
+        JSONWriter.getInstance().writeFromListToJson(storage, "todoItemTasks");
+    }
+
     @Override
     public TodoItemTask persist(TodoItemTask todoItemTask) {
         if (todoItemTask == null) throw new IllegalArgumentException("TodoItemTask can't be null.");
