@@ -26,6 +26,10 @@ public class TodoItem {
         setTaskDescription(taskDescription);
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public void setTitle(String title) {
         if (title == null || title.trim().isEmpty()) {
             throw new IllegalArgumentException("Title can't be NULL or empty.");
@@ -52,7 +56,7 @@ public class TodoItem {
         this.creator = creator;
     }
 
-    private int getId() {
+    public int getId() {
         return id;
     }
 

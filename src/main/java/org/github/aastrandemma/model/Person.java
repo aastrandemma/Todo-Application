@@ -3,8 +3,9 @@ package org.github.aastrandemma.model;
 import java.util.Objects;
 
 import static java.util.Objects.hash;
+import java.io.Serializable;
 
-public class Person {
+public class Person implements Serializable {
     private int id;
     private String firstName;
     private String lastName;
@@ -15,6 +16,10 @@ public class Person {
         setFirstName(firstName);
         setLastName(lastName);
         setEmail(email);
+    }
+    public Person(int id, String firstName, String lastName, String email) {
+        this(firstName, lastName, email);
+        this.id = id;
     }
 
     public void setFirstName(String firstName) {
@@ -32,11 +37,15 @@ public class Person {
         this.email = email;
     }
 
-    private void setCredentials(AppUser credentials) {
+    public void setCredentials(AppUser credentials) {
         this.credentials = credentials;
     }
 
-    private int getId() {
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
         return id;
     }
 
@@ -52,7 +61,7 @@ public class Person {
         return email;
     }
 
-    private AppUser getCredentials() {
+    public AppUser getCredentials() {
         return credentials;
     }
 
