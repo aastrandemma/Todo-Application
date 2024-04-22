@@ -8,10 +8,18 @@ import org.github.aastrandemma.data.sequencer.PersonIdSequencer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class PersonDAOCollection implements IPersonDAO {
-    private static List<Person> storage = new ArrayList<>();
+    private List<Person> storage = new ArrayList<>();
     private static PersonDAOCollection instance;
+
+    private static final Logger logger = Logger.getLogger(PersonDAOCollection.class.getName());
+    public static void initializeLogger(Logger parentLogger) {
+        logger.setLevel(Level.INFO);
+        logger.setParent(parentLogger);
+    }
 
     private PersonDAOCollection() {
     }
@@ -24,25 +32,33 @@ public class PersonDAOCollection implements IPersonDAO {
     }
 
     public void initializePerson() {
-        storage = JSONReader.getInstance().readToList("people");
+        storage = JSONReader.readToList("people");
     }
 
     public void shutDownPerson() {
-        JSONWriter.getInstance().writeFromListToJson(storage, "people");
+        JSONWriter.writeFromListToJson(storage, "people");
     }
 
+    /**
+     * Persists a new person to the storage.
+     * This method adds a new person to the storage if it does not already exist. If the provided person has an ID of 0,
+     * it assigns a new unique ID to the person.
+     *
+     * @param person The person to persist.
+     * @return The newly persisted person.
+     * @throws IllegalArgumentException If the provided person is null or if a person with the same ID already exist.
+     */
     @Override
     public Person persist(Person person) { // add a new Person.class object to a collection
-        if (person == null) throw new IllegalArgumentException("Person can't be null.");
+        if (person == null) throw new IllegalArgumentException("Person cannot be null.");
         Person exist = findById(person.getId());
-        if (exist != null) throw new IllegalArgumentException("Person already exist.");
+        if (exist != null) throw new IllegalArgumentException("A person with the same ID already exists.");
         if (person.getId() == 0) {
             person.setId(PersonIdSequencer.getInstance().nextId());
         } else {
             storage.forEach(p -> {
                 if (p.getId() == person.getId()) {
-                    System.out.println("Person ID already exist");
-                    System.out.println("Changing ID to unique");
+                    logger.warning("Person ID already exists. Changing ID to a unique value.");
                     person.setId(PersonIdSequencer.getInstance().nextId());
                 }
             });

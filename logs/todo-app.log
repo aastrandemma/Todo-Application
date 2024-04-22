@@ -1,0 +1,46 @@
+apr. 22, 2024 4:26:53 EM org.github.aastrandemma.ToDoApp main
+INFO: Application started
+apr. 22, 2024 4:26:53 EM org.github.aastrandemma.ToDoApp lambda$static$0
+INFO: Starting up...
+apr. 22, 2024 4:26:53 EM org.github.aastrandemma.ToDoApp lambda$static$0
+INFO: Reading JSON
+apr. 22, 2024 4:26:53 EM org.github.aastrandemma.JSONReader readToList
+INFO: people.json values have been initialized from the file.
+apr. 22, 2024 4:26:53 EM org.github.aastrandemma.JSONReader readToList
+INFO: appUser.json values have been initialized from the file.
+apr. 22, 2024 4:26:53 EM org.github.aastrandemma.JSONReader readToList
+INFO: todoItem.json values have been initialized from the file.
+apr. 22, 2024 4:26:53 EM org.github.aastrandemma.JSONReader readToList
+INFO: todoItemTasks.json values have been initialized from the file.
+apr. 22, 2024 4:26:53 EM org.github.aastrandemma.JSONReader readPropertiesToSequencers
+INFO: properties.json values have been initialized from the file.
+apr. 22, 2024 4:26:53 EM org.github.aastrandemma.ToDoApp lambda$static$1
+INFO: Writing JSON
+apr. 22, 2024 4:26:53 EM org.github.aastrandemma.JSONWriter writeFromListToJson
+INFO: File has been deleted for: appUser
+apr. 22, 2024 4:26:53 EM org.github.aastrandemma.JSONWriter writeFromListToJson
+INFO: JSON data has been written for: appUser
+apr. 22, 2024 4:26:53 EM org.github.aastrandemma.JSONWriter writeFromListToJson
+INFO: File has been deleted for: people
+apr. 22, 2024 4:26:53 EM org.github.aastrandemma.JSONWriter writeFromListToJson
+INFO: JSON data has been written for: people
+apr. 22, 2024 4:26:53 EM org.github.aastrandemma.JSONWriter writeFromListToJson
+INFO: File has been deleted for: todoItem
+apr. 22, 2024 4:26:53 EM org.github.aastrandemma.JSONWriter writeFromListToJson
+INFO: JSON data has been written for: todoItem
+apr. 22, 2024 4:26:53 EM org.github.aastrandemma.JSONWriter writeFromListToJson
+INFO: File has been deleted for: todoItemTasks
+apr. 22, 2024 4:26:53 EM org.github.aastrandemma.JSONWriter writeFromListToJson
+INFO: JSON data has been written for: todoItemTasks
+apr. 22, 2024 4:26:53 EM org.github.aastrandemma.JSONWriter writeSequencerValuesToPropertiesFile
+INFO: JSON data for sequencer values written to: JSONFiles\properties.json
+apr. 22, 2024 4:26:53 EM org.github.aastrandemma.ToDoApp lambda$static$1
+INFO: Shutting down...
+apr. 22, 2024 4:26:53 EM java.lang.Shutdown logRuntimeExit
+FINE: Runtime.exit() called with status: 1
+java.lang.Throwable: Runtime.exit(1)
+	at java.base/java.lang.Shutdown.logRuntimeExit(Shutdown.java:179)
+	at java.base/java.lang.Shutdown.exit(Shutdown.java:160)
+	at java.base/java.lang.Runtime.exit(Runtime.java:188)
+	at org.github.aastrandemma.ToDoApp.main(ToDoApp.java:86)
+

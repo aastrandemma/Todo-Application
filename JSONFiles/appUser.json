@@ -1,0 +1,7 @@
+[ {
+  "username" : "Jane",
+  "role" : "ROLE_APP_USER"
+}, {
+  "username" : "ADMIN",
+  "role" : "ROLE_APP_ADMIN"
+} ]

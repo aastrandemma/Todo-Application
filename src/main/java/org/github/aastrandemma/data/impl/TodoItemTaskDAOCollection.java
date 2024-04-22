@@ -8,11 +8,18 @@ import org.github.aastrandemma.model.TodoItemTask;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class TodoItemTaskDAOCollection implements ITodoItemTaskDAO {
     private List<TodoItemTask> storage = new ArrayList<>();
     private static TodoItemTaskDAOCollection instance;
+    private static final Logger logger = Logger.getLogger(TodoItemTaskDAOCollection.class.getName());
+    public static void initializeLogger(Logger parentLogger) {
+        logger.setLevel(Level.INFO);
+        logger.setParent(parentLogger);
+    }
 
     private TodoItemTaskDAOCollection() {
     }
@@ -25,23 +32,30 @@ public class TodoItemTaskDAOCollection implements ITodoItemTaskDAO {
     }
 
     public void initializeTodoItemTask() {
-        storage = JSONReader.getInstance().readToList("todoItemTasks");
+        storage = JSONReader.readToList("todoItemTasks");
     }
 
     public void shutDownTodoItemTask() {
-        JSONWriter.getInstance().writeFromListToJson(storage, "todoItemTasks");
+        JSONWriter.writeFromListToJson(storage, "todoItemTasks");
     }
 
+    /**
+     * Persists a new todoItemTask to the storage.
+     * This method adds a new todoItemTask to the storage if it does not already exist.
+     *
+     * @param todoItemTask The todoItemTask to persist.
+     * @return The newly persisted todoItemTask.
+     * @throws IllegalArgumentException If the provided todoItemTask is null.
+     */
     @Override
     public TodoItemTask persist(TodoItemTask todoItemTask) {
-        if (todoItemTask == null) throw new IllegalArgumentException("TodoItemTask can't be null.");
+        if (todoItemTask == null) throw new IllegalArgumentException("TodoItemTask cannot be null.");
         if (todoItemTask.getId() == 0) {
             todoItemTask.setId(TodoItemTaskIdSequencer.getInstance().nextId());
         } else {
             storage.forEach(t -> {
                 if (t.getId() == todoItemTask.getId()) {
-                    System.out.println("TodoItemTask ID already exist");
-                    System.out.println("Changing ID to unique");
+                    logger.warning("Todo item task ID already exists. Changing ID to a unique value.");
                     todoItemTask.setId(TodoItemTaskIdSequencer.getInstance().nextId());
                 }
             });

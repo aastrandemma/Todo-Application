@@ -23,18 +23,27 @@ public class AppUserDAOCollection implements IAppUserDAO {
     }
 
     public void initializeAppUser() {
-        storage = JSONReader.getInstance().readToList("appUser");
+        storage = JSONReader.readToList("appUser");
     }
 
     public void shutDownAppUser() {
-        JSONWriter.getInstance().writeFromListToJson(storage, "appUser");
+        JSONWriter.writeFromListToJson(storage, "appUser");
     }
 
+    /**
+     * Persists a new application user to the storage.
+     * This method adds a new application user to the storage if it does not already exist.
+     *
+     * @param appUser The appUser to persist.
+     * @return The newly persisted application user.
+     * @throws IllegalArgumentException If the provided appUser is null or
+     * if an application user with the same username already exist.
+     */
     @Override
     public AppUser persist(AppUser appUser) {
-        if (appUser == null) throw new IllegalArgumentException("AppUser can't be null.");
+        if (appUser == null) throw new IllegalArgumentException("Application user cannot be null.");
         AppUser exist = findByUsername(appUser.getUsername());
-        if (exist != null) throw new IllegalArgumentException("Username already exist.");
+        if (exist != null) throw new IllegalArgumentException("Application username already exist.");
         storage.add(appUser);
         return appUser;
     }

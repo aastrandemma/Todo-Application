@@ -7,59 +7,58 @@ import org.github.aastrandemma.data.sequencer.PersonIdSequencer;
 import org.github.aastrandemma.data.sequencer.TodoItemIdSequencer;
 import org.github.aastrandemma.data.sequencer.TodoItemTaskIdSequencer;
 
-import java.io.File;
-import java.io.FileOutputStream;
+import java.io.BufferedWriter;
 import java.io.IOException;
+import java.nio.file.*;
 import java.util.List;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class JSONWriter<T> {
-    private static JSONWriter instance;
-
-    public static JSONWriter getInstance() {
-        if (instance == null) {
-            instance = new JSONWriter();
-        }
-        return instance;
+    private static final Logger logger = Logger.getLogger(JSONWriter.class.getName());
+    public static void initializeLogger(Logger parentLogger) {
+        logger.setLevel(Level.INFO);
+        logger.setParent(parentLogger);
     }
-
     private JSONWriter(){}
 
-    public void writeFromListToJson(List<T> list, String fileName) {
+    public static <T> void writeFromListToJson(List<T> list, String fileName) {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
         objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
-        File file = new File("JSONFiles/" + fileName + ".json");
+        Path filePath = Paths.get("JSONFiles/" + fileName + ".json");
 
-        // ToDo: check why it won't work
-        if (file.exists()) {
-            boolean deleteFile = file.delete();
-            if (!deleteFile) {
-                System.out.println("Failed to delete existing file for: " + fileName);
+        if (Files.exists(filePath)) {
+            try {
+                Files.delete(filePath);
+                logger.info("File has been deleted for: " + fileName);
+            } catch (IOException e) {
+                logger.log(Level.SEVERE, "Error deleting file. Exception: " + e);
             }
         }
 
-        try {
-            objectMapper.writeValue(file, list);
+        try (BufferedWriter writer = Files.newBufferedWriter(filePath, StandardOpenOption.CREATE, StandardOpenOption.CREATE_NEW)) {
+            objectMapper.writeValue(writer, list);
+            logger.info("JSON data has been written for: " + fileName);
         } catch (IOException e) {
-            System.out.println("ERROR: " + e.getMessage());
+            logger.log(Level.SEVERE, "Failed to write JSON data for: " + fileName + " Exception: " + e);
         }
     }
 
-    public void writeSequencerValuesToPropertiesFile() {
+    public static void writeSequencerValuesToPropertiesFile() {
         Properties properties = new Properties();
-        String filePath = System.getProperty("user.dir") + "\\JSONFiles\\properties.json\\";
-        String message = "Sequencer data in properties file";
+        Path filePath = Paths.get("JSONFiles/properties.json");
+        String message = "Sequencer data";
         properties.setProperty("personIdSequencer", String.valueOf(PersonIdSequencer.getInstance().getCurrentId()));
         properties.setProperty("todoItemIdSequencer", String.valueOf(TodoItemIdSequencer.getInstance().getCurrentId()));
         properties.setProperty("todoItemTaskIdSequencer", String.valueOf(TodoItemTaskIdSequencer.getInstance().getCurrentId()));
 
-        try {
-            FileOutputStream file = new FileOutputStream(filePath);
-            properties.store(file, message);
-            file.close();
+        try (BufferedWriter writer = Files.newBufferedWriter(filePath, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)){
+            properties.store(writer, message);
+            logger.info("JSON data for sequencer values written to: " + filePath);
         } catch (IOException e) {
-            System.out.println("ERROR: " + e.getMessage());
+            logger.log(Level.SEVERE, "Failed to write JSON data for sequencer values. Exception: " + e);
         }
     }
 }

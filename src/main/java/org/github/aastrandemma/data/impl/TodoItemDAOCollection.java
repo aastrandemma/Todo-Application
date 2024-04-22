@@ -10,11 +10,18 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class TodoItemDAOCollection implements ITodoItemDAO {
     private List<TodoItem> storage = new ArrayList<>();
     private static TodoItemDAOCollection instance;
+    private static final Logger logger = Logger.getLogger(TodoItemDAOCollection.class.getName());
+    public static void initializeLogger(Logger parentLogger) {
+        logger.setLevel(Level.INFO);
+        logger.setParent(parentLogger);
+    }
 
     private TodoItemDAOCollection() {
     }
@@ -27,23 +34,30 @@ public class TodoItemDAOCollection implements ITodoItemDAO {
     }
 
     public void initializeTodoItem() {
-        storage = JSONReader.getInstance().readToList("todoItem");
+        storage = JSONReader.readToList("todoItem");
     }
 
     public void shutDownTodoItem() {
-        JSONWriter.getInstance().writeFromListToJson(storage, "todoItem");
+        JSONWriter.writeFromListToJson(storage, "todoItem");
     }
 
+    /**
+     * Persists a new todoItem to the storage.
+     * This method adds a new todoItem to the storage if it does not already exist.
+     *
+     * @param todoItem The todoItem to persist.
+     * @return The newly persisted todoItem.
+     * @throws IllegalArgumentException If the provided todoItem is null.
+     */
     @Override
     public TodoItem persist(TodoItem todoItem) {
-        if (todoItem == null) throw new IllegalArgumentException("TodoItem can't be null.");
+        if (todoItem == null) throw new IllegalArgumentException("Todo item cannot be null.");
         if (todoItem.getId() == 0) {
             todoItem.setId(TodoItemIdSequencer.getInstance().nextId());
         } else {
             storage.forEach(t -> {
                 if (t.getId() == todoItem.getId()) {
-                    System.out.println("TodoItem ID already exist");
-                    System.out.println("Changing ID to unique");
+                    logger.warning("Todo item ID already exists. Changing ID to a unique value.");
                     todoItem.setId(TodoItemIdSequencer.getInstance().nextId());
                 }
             });

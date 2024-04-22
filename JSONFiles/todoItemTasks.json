@@ -1,0 +1,45 @@
+[ {
+  "id" : 1,
+  "assigned" : false,
+  "todoItem" : {
+    "id" : 1,
+    "title" : "Title one",
+    "taskDescription" : null,
+    "deadline" : [ 2024, 4, 22 ],
+    "done" : false,
+    "creator" : {
+      "id" : 1,
+      "firstName" : "John",
+      "lastName" : "Doe",
+      "email" : "john@doe.com",
+      "credentials" : null
+    },
+    "overdue" : false
+  },
+  "assignee" : null
+}, {
+  "id" : 2,
+  "assigned" : true,
+  "todoItem" : {
+    "id" : 2,
+    "title" : "Title two",
+    "taskDescription" : null,
+    "deadline" : [ 2024, 4, 22 ],
+    "done" : false,
+    "creator" : {
+      "id" : 2,
+      "firstName" : "Jane",
+      "lastName" : "Doe",
+      "email" : "jane@doe.com",
+      "credentials" : null
+    },
+    "overdue" : false
+  },
+  "assignee" : {
+    "id" : 2,
+    "firstName" : "Jane",
+    "lastName" : "Doe",
+    "email" : "jane@doe.com",
+    "credentials" : null
+  }
+} ]
